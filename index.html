@@ -1,0 +1,1721 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>เกมจับคู่อัลกอริทึมข้ามวิชา (ม.1)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface-alt: #f8fafc;
+      --border: #dce2ee;
+      --ink: #1e293b;
+      --muted: #64748b;
+      --brand: #2563eb;
+      --brand-hover: #1d4ed8;
+      --brand-soft: #eff6ff;
+      --accent: #7c3aed;
+      --success: #16a34a;
+      --success-soft: #f0fdf4;
+      --success-border: #86efac;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --danger-border: #fca5a5;
+      --radius: 14px;
+      --radius-sm: 10px;
+      --shadow: 0 2px 8px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --font: "Sarabun", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font);
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.55;
+    }
+
+    .app-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-4) var(--space-6);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 700;
+      border: 1px solid #bfdbfe;
+    }
+
+    .brand-title h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .brand-title p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .mode-tabs {
+      display: flex;
+      gap: var(--space-2);
+      background: var(--surface-alt);
+      padding: var(--space-1);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+
+    .tab-btn {
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn:hover {
+      color: var(--ink);
+    }
+
+    .tab-btn.active {
+      background: var(--brand);
+      color: #ffffff;
+      box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+    }
+
+    .tab-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--space-6);
+    }
+
+    .student-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-4) var(--space-6);
+      margin-bottom: var(--space-6);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      box-shadow: var(--shadow);
+    }
+
+    .student-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .field-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .field-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .field-group input {
+      font: inherit;
+      font-size: 14px;
+      padding: 6px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-alt);
+      color: var(--ink);
+    }
+
+    .field-group input:focus {
+      outline: 2px solid var(--brand);
+      background: var(--surface);
+    }
+
+    .score-action-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+
+    .score-pill {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      background: var(--brand-soft);
+      border: 1px solid #bfdbfe;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      color: var(--brand);
+      font-size: 15px;
+    }
+
+    .instruction-banner {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand);
+      border-radius: var(--radius-sm);
+      padding: var(--space-4) var(--space-6);
+      margin-bottom: var(--space-6);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      box-shadow: var(--shadow);
+    }
+
+    .instruction-text h2 {
+      margin: 0 0 4px 0;
+      font-size: 18px;
+      color: var(--ink);
+    }
+
+    .instruction-text p {
+      margin: 0;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .btn {
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 9px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-hover);
+    }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-alt);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: #ffffff;
+    }
+
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Mode 1 Layout */
+    .game-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-6);
+    }
+
+    @media (min-width: 920px) {
+      .game-layout {
+        grid-template-columns: 360px 1fr;
+        align-items: start;
+      }
+    }
+
+    .deck-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-4);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 84px;
+    }
+
+    .panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 0 var(--space-3) 0;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-pool {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      min-height: 160px;
+      padding: var(--space-2);
+      border-radius: var(--radius-sm);
+      background: var(--surface-alt);
+      border: 2px dashed var(--border);
+    }
+
+    .card-pool.drag-over {
+      border-color: var(--brand);
+      background: var(--brand-soft);
+    }
+
+    .empty-pool-msg {
+      text-align: center;
+      padding: var(--space-6) var(--space-3);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .algo-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-3) var(--space-4);
+      cursor: grab;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+      transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+      user-select: none;
+      position: relative;
+    }
+
+    .algo-card:hover {
+      border-color: #93c5fd;
+      box-shadow: 0 3px 8px rgba(37, 99, 235, 0.12);
+    }
+
+    .algo-card:active {
+      cursor: grabbing;
+    }
+
+    .algo-card.selected {
+      border-color: var(--brand);
+      background: var(--brand-soft);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+
+    .algo-card.correct {
+      border-color: var(--success);
+      background: var(--success-soft);
+    }
+
+    .algo-card.incorrect {
+      border-color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+    .algo-card-steps {
+      font-size: 13.5px;
+      color: var(--ink);
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .algo-card-steps li {
+      margin-bottom: 2px;
+    }
+
+    .card-status-tag {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .card-status-tag.ok {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .card-status-tag.err {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .subject-zone {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-4);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 210px;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .subject-zone.drag-over,
+    .subject-zone.selectable-target:hover {
+      border-color: var(--brand);
+      background: #f8fbff;
+    }
+
+    .subject-header {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding-bottom: var(--space-3);
+      margin-bottom: var(--space-3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .subject-emoji {
+      font-size: 22px;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--surface-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .subject-name {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .subject-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .zone-drop-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+      border: 1.5px dashed var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-2);
+      background: var(--surface-alt);
+      min-height: 115px;
+    }
+
+    .zone-placeholder {
+      margin: auto;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    /* Mode 2: Missing Step */
+    .missing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-4);
+    }
+
+    .algo-board {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-4);
+      box-shadow: var(--shadow);
+    }
+
+    .algo-board-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--space-3);
+      padding-bottom: var(--space-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .algo-board-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .badge-subject {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+    }
+
+    .step-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .step-item {
+      font-size: 14px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    .missing-slot {
+      min-height: 54px;
+      border: 2px dashed var(--brand);
+      border-radius: 8px;
+      background: #eff6ff;
+      padding: 6px;
+      display: flex;
+       flex-direction: column;
+      justify-content: center;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .missing-slot.drag-over {
+      background: #dbeafe;
+      border-color: var(--accent);
+    }
+
+    .missing-slot-placeholder {
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--brand);
+      pointer-events: none;
+    }
+
+    /* Teacher Mode Panel */
+    .teacher-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: var(--space-6);
+      box-shadow: var(--shadow);
+    }
+
+    .teacher-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-4);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    .teacher-header h2 {
+      margin: 0;
+      font-size: 20px;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .score-table-wrapper {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+    }
+
+    .score-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    .score-table th, .score-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .score-table th {
+      background: var(--surface-alt);
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .score-table tbody tr:hover {
+      background: #f8fafc;
+    }
+
+    .no-data-msg {
+      text-align: center;
+      padding: var(--space-8) var(--space-4);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Modals */
+    .custom-modal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: var(--space-4);
+    }
+
+    .modal-content {
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      max-width: 450px;
+      width: 100%;
+      padding: var(--space-6);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--space-2);
+    }
+
+    .modal-title {
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ink);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--muted);
+      line-height: 1;
+    }
+
+    .modal-body {
+      font-size: 14.5px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-2);
+      margin-top: var(--space-2);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Teacher Setup Guide */
+    .setup-guide {
+      margin-top: var(--space-6);
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: var(--space-4) var(--space-6);
+    }
+
+    .setup-guide h3 {
+      margin: 0 0 var(--space-2) 0;
+      color: var(--brand);
+      font-size: 16px;
+    }
+
+    .setup-guide p {
+      font-size: 13.5px;
+      margin: 0 0 var(--space-3) 0;
+      color: var(--muted);
+    }
+
+    .code-box {
+      background: #1e293b;
+      color: #f8fafc;
+      padding: var(--space-3) var(--space-4);
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 12.5px;
+      overflow-x: auto;
+      margin-bottom: var(--space-4);
+    }
+  </style>
+<style data-link-removed-style>a[data-link-removed],a[href*="zPythonSafez"]:not([onclick]){pointer-events:none!important;cursor:default!important;opacity:.6}</style></head>
+<body>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand-title">
+        <div class="brand-icon">🧩</div>
+        <div>
+          <h1>เกมจับคู่อัลกอริทึมข้ามวิชา (ม.1)</h1>
+          <p>ฝึกคิดอย่างเป็นขั้นตอนผ่านอัลกอริทึมภาษาธรรมชาติและรายวิชาต่าง ๆ</p>
+        </div>
+      </div>
+
+      <div class="mode-tabs" role="tablist" aria-label="เลือกโหมดเกม">
+        <button type="button" class="tab-btn active" id="tab-mode-1" onclick="switchMode(1)">
+          ด่านที่ 1: จับคู่อัลกอริทึมกับวิชา (6 ข้อ)
+        </button>
+        <button type="button" class="tab-btn" id="tab-mode-2" onclick="switchMode(2)">
+          ด่านที่ 2: เติมขั้นตอนที่หายไป (6 ข้อ)
+        </button>
+        <button type="button" class="tab-btn" id="tab-mode-3" onclick="switchMode(3)">
+          📊 ตารางคะแนนสะสม (สำหรับครู)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Student Info & Score Bar -->
+    <section class="student-bar" aria-label="ข้อมูลนักเรียนและคะแนน">
+      <div class="student-inputs">
+        <div class="field-group">
+          <label for="st-name">ชื่อ-นามสกุล:</label>
+          <input type="text" id="st-name" placeholder="พิมพ์ชื่อ-นามสกุล" style="width: 190px;">
+        </div>
+        <div class="field-group">
+          <label for="st-class">ชั้น:</label>
+          <input type="text" id="st-class" placeholder="ม.1/..." style="width: 85px;">
+        </div>
+        <div class="field-group">
+          <label for="st-no">เลขที่:</label>
+          <input type="number" id="st-no" placeholder="เลขที่" style="width: 75px;" min="1" max="60">
+        </div>
+      </div>
+
+      <div class="score-action-group">
+        <div class="score-pill" id="score-display">
+          <span>คะแนนรวมทั้ง 2 ด่าน: 0 / 12</span>
+        </div>
+        <button type="button" class="btn btn-success" onclick="saveStudentScore()">
+          💾 ส่งบันทึกคะแนนเข้าตาราง
+        </button>
+      </div>
+    </section>
+
+    <!-- MODE 1: Match Algorithm to Subject -->
+    <section id="view-mode-1">
+      <div class="instruction-banner">
+        <div class="instruction-text">
+          <h2>ด่านที่ 1: ขั้นตอนอัลกอริทึมนี้ เป็นของ "วิชาอะไร"?</h2>
+          <p>วิธีเล่น: ลากการ์ดขั้นตอนอัลกอริทึมทางซ้าย ไปวางในกล่องรายวิชาที่ถูกต้อง (หรือคลิกที่การ์ดแล้วคลิกที่กล่องรายวิชา)</p>
+        </div>
+        <div class="action-buttons">
+          <button type="button" class="btn btn-primary" onclick="checkMode1()">ตรวจคำตอบด่านที่ 1</button>
+          <button type="button" class="btn btn-secondary" onclick="resetMode1()">เริ่มใหม่ / สลับการ์ด</button>
+        </div>
+      </div>
+
+      <div class="game-layout">
+        <aside class="deck-panel">
+          <h3 class="panel-title">
+            <span>คลังการ์ดอัลกอริทึม</span>
+            <span id="m1-remaining" style="font-size:13px; color:var(--muted);">6 การ์ด</span>
+          </h3>
+          <div class="card-pool" id="m1-pool" ondragover="allowDrop(event)" ondrop="dropToPool1(event)" onclick="handlePoolClick1()">
+          </div>
+        </aside>
+
+        <div class="subjects-grid" id="m1-subjects">
+        </div>
+      </div>
+    </section>
+
+    <!-- MODE 2: Fill Missing Step -->
+    <section id="view-mode-2" class="hidden">
+      <div class="instruction-banner">
+        <div class="instruction-text">
+          <h2>ด่านที่ 2: จับคู่ "ขั้นตอนที่หายไป" ของอัลกอริทึม</h2>
+          <p>วิธีเล่น: ลากชิ้นส่วนขั้นตอนที่หายไปทางซ้าย ไปเติมลงในช่องว่าง [ ? ] ของอัลกอริทึมแต่ละวิชาให้สมบูรณ์</p>
+        </div>
+        <div class="action-buttons">
+          <button type="button" class="btn btn-primary" onclick="checkMode2()">ตรวจคำตอบด่านที่ 2</button>
+          <button type="button" class="btn btn-secondary" onclick="resetMode2()">เริ่มใหม่ / สลับตัวเลือก</button>
+        </div>
+      </div>
+
+      <div class="game-layout">
+        <aside class="deck-panel">
+          <h3 class="panel-title">
+            <span>ขั้นตอนที่หายไป</span>
+            <span id="m2-remaining" style="font-size:13px; color:var(--muted);">6 ชิ้นส่วน</span>
+          </h3>
+          <div class="card-pool" id="m2-pool" ondragover="allowDrop(event)" ondrop="dropToPool2(event)" onclick="handlePoolClick2()">
+          </div>
+        </aside>
+
+        <div class="missing-grid" id="m2-boards">
+        </div>
+      </div>
+    </section>
+
+    <!-- MODE 3: Teacher Score Database Dashboard -->
+    <section id="view-mode-3" class="hidden">
+      <div class="teacher-panel">
+        <div class="teacher-header">
+          <h2>📊 ระบบบันทึกและแสดงผลคะแนนรวมของห้องเรียน</h2>
+          <div class="action-buttons">
+            <button type="button" class="btn btn-secondary" onclick="copyTableToClipboard()">
+              📋 คัดลอกตารางข้อมูล (Copy)
+            </button>
+            <button type="button" class="btn btn-primary" onclick="downloadScoresCSV()">
+              📥 ดาวน์โหลดเป็นไฟล์ Excel/CSV
+            </button>
+            <button type="button" class="btn btn-secondary" style="color: var(--danger); border-color: var(--danger-border);" onclick="confirmClearScores()">
+              🗑️ ล้างคะแนนทั้งหมด
+            </button>
+          </div>
+        </div>
+
+        <div class="score-table-wrapper">
+          <table class="score-table" id="scores-table-element">
+            <thead>
+              <tr>
+                <th>ลำดับ</th>
+                <th>ชื่อ-นามสกุล</th>
+                <th>ชั้น</th>
+                <th>เลขที่</th>
+                <th>ด่านที่ 1 (6 คะแนน)</th>
+                <th>ด่านที่ 2 (6 คะแนน)</th>
+                <th>คะแนนรวม (12 คะแนน)</th>
+                <th>วัน-เวลาที่บันทึก</th>
+              </tr>
+            </thead>
+            <tbody id="scores-table-body">
+              <!-- Injected by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <div id="no-scores-container" class="no-data-msg hidden">
+          ยังไม่มีข้อมูลบันทึกคะแนนส่งเข้ามา นักเรียนสามารถพิมพ์ชื่อของตนด้านบนและคลิกปุ่ม <b>"💾 ส่งบันทึกคะแนนเข้าตาราง"</b> เพื่อส่งข้อมูลเข้ามาสะสมในตารางนี้ได้
+        </div>
+
+        <!-- ONLINE INTEGRATION GUIDE -->
+        <div class="setup-guide">
+          <h3>☁️ วิธีอัปเกรดเพื่อส่งคะแนนเข้า "Google Sheets" ของคุณครูแบบออนไลน์เรียบร้อย!</h3>
+          <p>หากคุณครูเปิดไฟล์นี้แบบเดี่ยว (Standalone) บนเครื่องคอมพิวเตอร์ และต้องการรวมคะแนนของนักเรียนทุกคนจากเครื่องต่าง ๆ เข้ามาที่ Google Sheets แผ่นเดียวกันแบบ Real-time คุณครูสามารถแก้ไขโค้ดได้ง่าย ๆ ตามขั้นตอนนี้เลยค่ะ:</p>
+          
+          <ol style="font-size: 13.5px; padding-left: 20px; line-height: 1.6; color: var(--ink);">
+            <li>สร้าง <b>Google Form</b> ที่มีคำถาม 6 ข้อตามลำดับ: (1. ชื่อ-นามสกุล, 2. ชั้น, 3. เลขที่, 4. คะแนนด่าน 1, 5. คะแนนด่าน 2, 6. คะแนนรวม)</li>
+            <li>ที่หน้า Google Form กดปุ่มสามจุดมุมขวาบน เลือก <b>"รับลิงก์ที่กรอกไว้ล่วงหน้า" (Get pre-filled link)</b></li>
+            <li>กรอกข้อมูลสมมุติลงไปในทุกช่องแล้วกดปุ่ม "รับลิงก์" เพื่อคัดลอก URL ออกมา</li>
+            <li>เปิดไฟล์ <code>index.html</code> นี้ด้วยโปรแกรมแก้ไขข้อความ (เช่น Notepad, VS Code) แล้วค้นหาคำว่า <code>submitToGoogleForm</code></li>
+            <li>นำ URL ของฟอร์ม และรหัส <code>entry.xxxxxx</code> มาแทนที่ค่าคอนฟิกในโค้ดด้านล่างนี้ได้ทันที:</li>
+          </ol>
+
+          <div class="code-box">
+function submitToGoogleForm(name, stClass, stNo, m1, m2, total) {<br>
+&nbsp;&nbsp;// 📍 แก้ไขตรงนี้เพื่อส่งเข้า Google Sheets ออนไลน์<br>
+&nbsp;&nbsp;const formUrl = "(link removed)";<br>
+&nbsp;&nbsp;const entryName = "entry.XXXXXX";<br>
+&nbsp;&nbsp;const entryClass = "entry.XXXXXX";<br>
+&nbsp;&nbsp;const entryNo = "entry.XXXXXX";<br>
+&nbsp;&nbsp;const entryM1 = "entry.XXXXXX";<br>
+&nbsp;&nbsp;const entryM2 = "entry.XXXXXX";<br>
+&nbsp;&nbsp;const entryTotal = "entry.XXXXXX";<br>
+&nbsp;&nbsp;...<br>
+}
+          </div>
+          <p style="font-size: 12.5px; color: var(--muted); margin: 0;">เมื่อแก้ไขเสร็จแล้วบันทึกไฟล์ส่งให้เด็กเล่น เมื่อเด็กกดปุ่ม "ส่งคะแนนเข้าตาราง" คะแนนจะถูกโยนเข้า Google Sheets ของคุณครูทันทีโดยอัตโนมัติค่ะ!</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ALERT MODAL -->
+  <div id="custom-alert-modal" class="custom-modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title" id="alert-title-text">แจ้งเตือน</span>
+        <button type="button" class="modal-close" onclick="closeAlert()">&times;</button>
+      </div>
+      <div class="modal-body" id="alert-body-text">
+        ข้อความแจ้งเตือน...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="closeAlert()">ตกลง</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIRM MODAL -->
+  <div id="custom-confirm-modal" class="custom-modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="modal-title">ยืนยันการทำรายการ</span>
+        <button type="button" class="modal-close" onclick="closeConfirm()">&times;</button>
+      </div>
+      <div class="modal-body">
+        คุณแน่ใจหรือไม่ว่าต้องการล้างข้อมูลคะแนนทั้งหมดในระบบ? ข้อมูลนี้จะสูญหายทันที
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeConfirm()">ยกเลิก</button>
+        <button type="button" class="btn btn-primary" style="background: var(--danger); color: white;" onclick="clearAllScores()">ลบทั้งหมด</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- DATA FOR MODE 1: Match Algorithm to Subject ---
+    const MODE1_SUBJECTS = [
+      { id: 'daily', name: 'ชีวิตประจำวัน', sub: 'การต้มไข่ลวกจับเวลา', emoji: '🍳' },
+      { id: 'sci', name: 'วิชาวิทยาศาสตร์', sub: 'การทดสอบกรด-ด่างด้วยลิตมัส', emoji: '🔬' },
+      { id: 'math', name: 'วิชาคณิตศาสตร์', sub: 'การคำนวณหาพื้นที่สามเหลี่ยม', emoji: '📐' },
+      { id: 'eng', name: 'วิชาภาษาอังกฤษ', sub: 'การเติม s / es ท้ายคำกริยา', emoji: '🇬🇧' },
+      { id: 'thai', name: 'วิชาภาษาไทย', sub: 'การจำแนกคำควบกล้ำแท้-ไม่แท้', emoji: '📖' },
+      { id: 'pe', name: 'วิชาสุขศึกษาและพลศึกษา', sub: 'ปฐมพยาบาลข้อเท้าแพลง (R.I.C.E.)', emoji: '🏃' }
+    ];
+
+    const MODE1_CARDS = [
+      {
+        id: 'c_daily',
+        subjectId: 'daily',
+        steps: [
+          '1. ต้มน้ำให้เดือด แล้วใส่ไข่ลงในหม้อ',
+          '2. จับเวลา 3 นาที',
+          '3. ถ้าครบ 3 นาทีแล้ว ให้นำไข่ขึ้นแช่น้ำเย็นทันที'
+        ]
+      },
+      {
+        id: 'c_sci',
+        subjectId: 'sci',
+        steps: [
+          '1. นำกระดาษลิตมัสสีน้ำเงินจุ่มลงในสารละลาย',
+          '2. สังเกตการเปลี่ยนสีของกระดาษ',
+          '3. ถ้าเปลี่ยนเป็นสีแดง แสดงผลว่า "สารละลายเป็นกรด"'
+        ]
+      },
+      {
+        id: 'c_math',
+        subjectId: 'math',
+        steps: [
+          '1. รับค่า "ความยาวฐาน" และ "ความสูง"',
+          '2. คำนวณพื้นที่ = 0.5 × ความยาวฐาน × ความสูง',
+          '3. แสดงผลลัพธ์พื้นที่ออกทางหน้าจอ'
+        ]
+      },
+      {
+        id: 'c_eng',
+        subjectId: 'eng',
+        steps: [
+          '1. ตรวจสอบประธานว่าเป็นเอกพจน์ (He, She, It) หรือไม่',
+          '2. ถ้าใช่ และกริยาลงท้ายด้วย s, ss, ch, sh, x, o ให้เติม "es"',
+          '3. มิฉะนั้น (กริยาตัวอื่น) ให้เติม "s"'
+        ]
+      },
+      {
+        id: 'c_thai',
+        subjectId: 'thai',
+        steps: [
+          '1. อ่านออกเสียงคำศัพท์ที่มีพยัญชนะต้น 2 ตัว',
+          '2. ถ้าออกเสียงพยัญชนะต้น 2 ตัวพร้อมกัน แสดงว่า "คำควบกล้ำแท้"',
+          '3. ถ้าออกเสียงตัวแรกตัวเดียวหรือเปลี่ยนเสียง แสดงว่า "ควบกล้ำไม่แท้"'
+        ]
+      },
+      {
+        id: 'c_pe',
+        subjectId: 'pe',
+        steps: [
+          '1. ให้ผู้บาดเจ็บนั่งพักทันที ห้ามเดินลงน้ำหนัก (Rest)',
+          '2. ประคบเย็น 15-20 นาที (Ice) และพันผ้ายืดพยุงข้อเท้า (Compression)',
+          '3. ยกข้อเท้าให้สูงกว่าระดับหัวใจ (Elevation)'
+        ]
+      }
+    ];
+
+    // --- DATA FOR MODE 2: Fill Missing Step in Formulas & Subject Algorithms ---
+    const MODE2_QUESTIONS = [
+      {
+        id: 'q_math',
+        title: 'การหาพื้นที่รูปสามเหลี่ยม',
+        subject: 'คณิตศาสตร์',
+        before: [
+          '1. เริ่มต้นการทำงาน',
+          '2. รับค่า "ความยาวฐาน" และ "ความสูง" ของสามเหลี่ยม'
+        ],
+        after: [
+          '4. แสดงผลลัพธ์ "พื้นที่รูปสามเหลี่ยม"',
+          '5. สิ้นสุดการทำงาน'
+        ],
+        answerId: 'ans_math',
+        answerText: '3. คำนวณ พื้นที่ = 0.5 × ความยาวฐาน × ความสูง'
+      },
+      {
+        id: 'q_sci',
+        title: 'การทดสอบสารละลายกรด-ด่าง',
+        subject: 'วิทยาศาสตร์',
+        before: [
+          '1. เริ่มต้นการทำงาน',
+          '2. นำกระดาษลิตมัสสีน้ำเงินจุ่มลงในสารละลายตัวอย่าง',
+          '3. สังเกตการเปลี่ยนแปลงของสีกระดาษลิตมัส'
+        ],
+        after: [
+          '5. มิฉะนั้น แสดงผลว่า "เป็นเบสหรือกลาง"',
+          '6. สิ้นสุดการทำงาน'
+        ],
+        answerId: 'ans_sci',
+        answerText: '4. ถ้ากระดาษเปลี่ยนเป็นสีแดง ให้แสดงผลว่า "มีฤทธิ์เป็นกรด"'
+      },
+      {
+        id: 'q_bmi',
+        title: 'การคำนวณค่าดัชนีมวลกาย (BMI)',
+        subject: 'สุขศึกษา',
+        before: [
+          '1. เริ่มต้นการทำงาน',
+          '2. รับค่า "น้ำหนักตัว (กก.)" และ "ส่วนสูง (เมตร)"'
+        ],
+        after: [
+          '4. ถ้า BMI < 18.5 แสดงผลว่า "น้ำหนักน้อย / ผอม"',
+          '5. สิ้นสุดการทำงาน'
+        ],
+        answerId: 'ans_bmi',
+        answerText: '3. คำนวณ BMI = น้ำหนักตัว ÷ (ส่วนสูง × ส่วนสูง)'
+      },
+      {
+        id: 'q_pe_situp',
+        title: 'การทดสอบลุก-นั่ง 30 วินาที',
+        subject: 'พลศึกษา',
+        before: [
+          '1. เริ่มต้น และเตรียมตัวในท่านอนหงาย ชันเข่า 90 องศา',
+          '2. ลุกขึ้นให้ศอกแตะเข่าและนับจำนวนครั้งภายในเวลา 30 วินาที'
+        ],
+        after: [
+          '4. มิฉะนั้น แสดงผลว่า "สมรรถภาพทางกายควรปรับปรุง"',
+          '5. สิ้นสุดการทำงาน'
+        ],
+        answerId: 'ans_pe_situp',
+        answerText: '3. ถ้าทำได้ >= 20 ครั้ง แสดงผลว่า "สมรรถภาพดีเยี่ยม"'
+      },
+      {
+        id: 'q_thai_spelling',
+        title: 'การตรวจสอบคำสะกดตรงตามมาตรา',
+        subject: 'ภาษาไทย',
+        before: [
+          '1. เริ่มต้นการทำงาน',
+          '2. รับค่าคำศัพท์ภาษาไทย และสังเกตพยัญชนะตัวสะกดท้ายคำ'
+        ],
+        after: [
+          '4. มิฉะนั้น แสดงผลว่า "สะกดไม่ตรงตามมาตรา (เช่น บาท)"',
+          '5. สิ้นสุดการทำงาน'
+        ],
+        answerId: 'ans_thai_spelling',
+        answerText: '3. ถ้าสะกดด้วย ก, บ, ด, ย, ว, ม, น, ง โดยตรง แสดงว่า "ตรงตามมาตรา"'
+      },
+      {
+        id: 'q_thai_tone',
+        title: 'การผันวรรณยุกต์ตามไตรยางศ์ (อักษร 3 หมู่)',
+        subject: 'ภาษาไทย',
+        before: [
+          '1. เริ่มต้น และรับค่าคำศัพท์ที่ต้องการผันวรรณยุกต์',
+          '2. ตรวจสอบพยัญชนะต้นของคำว่าเป็นอักษรหมู่ใด'
+        ],
+        after: [
+          '4. ถ้าเป็นอักษรสูง หรือ อักษรต่ำ แสดงผลว่า "ผันได้ 3 เสียง"',
+          '5. สิ้นสุดการทำงาน'
+        ],
+        answerId: 'ans_thai_tone',
+        answerText: '3. ถ้าเป็นอักษรกลาง (ไก่จิกเด็กตายบนปากโอ่ง) แสดงว่า "ผันได้ครบ 5 เสียง"'
+      }
+    ];
+
+    // State
+    let m1Placements = {}; // subjectId -> cardId
+    let m1DeckOrder = [];
+    let m1SelectedCardId = null;
+    let m1Checked = false;
+    let m1Score = 0;
+
+    let m2Placements = {}; // questionId -> answerId
+    let m2DeckOrder = [];
+    let m2SelectedAnsId = null;
+    let m2Checked = false;
+    let m2Score = 0;
+
+    function shuffle(arr) {
+      const copy = [...arr];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function switchMode(mode) {
+      const v1 = document.getElementById('view-mode-1');
+      const v2 = document.getElementById('view-mode-2');
+      const v3 = document.getElementById('view-mode-3');
+      const t1 = document.getElementById('tab-mode-1');
+      const t2 = document.getElementById('tab-mode-2');
+      const t3 = document.getElementById('tab-mode-3');
+
+      v1.classList.add('hidden');
+      v2.classList.add('hidden');
+      v3.classList.add('hidden');
+      t1.classList.remove('active');
+      t2.classList.remove('active');
+      t3.classList.remove('active');
+
+      if (mode === 1) {
+        v1.classList.remove('hidden');
+        t1.classList.add('active');
+      } else if (mode === 2) {
+        v2.classList.remove('hidden');
+        t2.classList.add('active');
+      } else {
+        v3.classList.remove('hidden');
+        t3.classList.add('active');
+        renderScoresTable();
+      }
+    }
+
+    function updateTotalScore() {
+      const total = m1Score + m2Score;
+      document.getElementById('score-display').innerHTML =
+        `<span>คะแนนรวมทั้ง 2 ด่าน: ${total} / 12 (ด่าน 1: ${m1Score}/6 | ด่าน 2: ${m2Score}/6)</span>`;
+    }
+
+    // ==========================================
+    // ALERT AND CONFIRMATION DIALOGS
+    // ==========================================
+    function openAlert(title, message) {
+      document.getElementById('alert-title-text').textContent = title;
+      document.getElementById('alert-body-text').textContent = message;
+      document.getElementById('custom-alert-modal').classList.remove('hidden');
+    }
+
+    function closeAlert() {
+      document.getElementById('custom-alert-modal').classList.add('hidden');
+    }
+
+    function confirmClearScores() {
+      document.getElementById('custom-confirm-modal').classList.remove('hidden');
+    }
+
+    function closeConfirm() {
+      document.getElementById('custom-confirm-modal').classList.add('hidden');
+    }
+
+    // ==========================================
+    // SCORE RECORDING & TEACHER STORAGE
+    // ==========================================
+    function getStoredScores() {
+      try {
+        const stored = localStorage.getItem('algo_game_scores');
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveStudentScore() {
+      const name = document.getElementById('st-name').value.trim();
+      const stClass = document.getElementById('st-class').value.trim();
+      const stNo = document.getElementById('st-no').value.trim();
+
+      if (!name || !stClass || !stNo) {
+        openAlert('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกข้อมูล ชื่อ-นามสกุล, ชั้น และเลขที่ ก่อนบันทึกคะแนนเข้าตาราง');
+        return;
+      }
+
+      const currentScores = getStoredScores();
+      const timestamp = new Date().toLocaleString('th-TH', { hour12: false });
+
+      const newRecord = {
+        id: Date.now(),
+        name: name,
+        class: stClass,
+        no: stNo,
+        m1: m1Score,
+        m2: m2Score,
+        total: m1Score + m2Score,
+        time: timestamp
+      };
+
+      currentScores.push(newRecord);
+
+      try {
+        localStorage.setItem('algo_game_scores', JSON.stringify(currentScores));
+        
+        // เรียกฟังก์ชันส่งข้อมูลไปยัง Google Form ออนไลน์แบบเบื้องหลัง
+        submitToGoogleForm(name, stClass, stNo, m1Score, m2Score, (m1Score + m2Score));
+        
+        openAlert('บันทึกสำเร็จ ✨', `บันทึกคะแนนของ ${name} (${m1Score + m2Score} คะแนน) เข้าตารางสะสมสำเร็จแล้ว!`);
+      } catch (e) {
+        openAlert('เกิดข้อผิดพลาด', 'ไม่สามารถบันทึกข้อมูลลงในเบราว์เซอร์ได้');
+      }
+    }
+
+    // ==========================================
+    // GOOGLE FORM BACKGROUND SUBMISSION
+    // ==========================================
+    function submitToGoogleForm(name, stClass, stNo, m1, m2, total) {
+      // 📍 คอนฟิกระบบออนไลน์: คุณครูสามารถสร้าง Google Form และนำลิงก์ที่กรอกข้อมูลไว้ล่วงหน้ามาแปะที่นี่ได้ค่ะ
+      const formUrl = "about:invalid#zPythonSafez";
+      const entryName = "entry.XXXXXX";  // รหัสฟิลด์ ชื่อ-นามสกุล
+      const entryClass = "entry.XXXXXX"; // รหัสฟิลด์ ชั้น
+      const entryNo = "entry.XXXXXX";    // รหัสฟิลด์ เลขที่
+      const entryM1 = "entry.XXXXXX";    // รหัสฟิลด์ คะแนนด่านที่ 1
+      const entryM2 = "entry.XXXXXX";    // รหัสฟิลด์ คะแนนด่านที่ 2
+      const entryTotal = "entry.XXXXXX"; // รหัสฟิลด์ คะแนนรวม
+
+      if (formUrl.includes("YOUR_FORM_ID")) {
+        // ยังไม่ได้ตั้งค่าระบบออนไลน์แบบ Hardcoded
+        console.log("ยังไม่ได้ตั้งค่า Google Sheets ออนไลน์");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append(entryName, name);
+      formData.append(entryClass, stClass);
+      formData.append(entryNo, stNo);
+      formData.append(entryM1, m1);
+      formData.append(entryM2, m2);
+      formData.append(entryTotal, total);
+
+      // ส่ง Request แบบเบื้องหลังข้ามโดเมนไปยัง Google Forms
+      fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        body: formData
+      }).then(() => {
+        console.log("ส่งคะแนนไป Google Sheets ออนไลน์สำเร็จเรียบร้อยแล้วค่ะ!");
+      }).catch((err) => {
+        console.error("การเชื่อมต่อระบบคลาวด์ขัดข้อง: ", err);
+      });
+    }
+
+    function renderScoresTable() {
+      const tbody = document.getElementById('scores-table-body');
+      const tableWrapper = document.querySelector('.score-table-wrapper');
+      const noDataMsg = document.getElementById('no-scores-container');
+      const scores = getStoredScores();
+
+      if (scores.length === 0) {
+        tbody.innerHTML = '';
+        tableWrapper.classList.add('hidden');
+        noDataMsg.classList.remove('hidden');
+        return;
+      }
+
+      tableWrapper.classList.remove('hidden');
+      noDataMsg.classList.add('hidden');
+
+      tbody.innerHTML = scores.map((score, index) => `
+        <tr>
+          <td><b>${index + 1}</b></td>
+          <td>${escapeHtml(score.name)}</td>
+          <td>${escapeHtml(score.class)}</td>
+          <td>${escapeHtml(score.no)}</td>
+          <td style="color: var(--brand); font-weight: 600;">${score.m1} / 6</td>
+          <td style="color: var(--accent); font-weight: 600;">${score.m2} / 6</td>
+          <td style="color: var(--success); font-weight: 700; font-size: 15px;">${score.total} / 12</td>
+          <td style="color: var(--muted); font-size: 12px;">${score.time}</td>
+        </tr>
+      `).join('');
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function clearAllScores() {
+      try {
+        localStorage.removeItem('algo_game_scores');
+      } catch (e) {}
+      closeConfirm();
+      renderScoresTable();
+      openAlert('ลบเรียบร้อย', 'ล้างตารางข้อมูลคะแนนทั้งหมดสำเร็จแล้ว');
+    }
+
+    function copyTableToClipboard() {
+      const scores = getStoredScores();
+      if (scores.length === 0) {
+        openAlert('ไม่มีข้อมูล', 'ไม่มีข้อมูลคะแนนสำหรับคัดลอก');
+        return;
+      }
+
+      let text = "ลำดับ\tชื่อ-นามสกุล\tชั้น\tเลขที่\tคะแนนด่าน 1\tคะแนนด่าน 2\tคะแนนรวม\tวันเวลาที่บันทึก\n";
+      scores.forEach((score, i) => {
+        text += `${i + 1}\t${score.name}\t${score.class}\t${score.no}\t${score.m1}\t${score.m2}\t${score.total}\t${score.time}\n`;
+      });
+
+      navigator.clipboard.writeText(text)
+        .then(() => {
+          openAlert('คัดลอกสำเร็จ 📋', 'คัดลอกข้อมูลตารางคะแนนเรียบร้อยแล้ว สามารถเปิด Excel/Google Sheets แล้วกดวาง (Ctrl+V) ได้เลยค่ะ');
+        })
+        .catch(() => {
+          openAlert('คัดลอกไม่สำเร็จ', 'ขออภัย ระบบไม่สามารถคัดลอกข้อมูลลง Clipboard ได้อัตโนมัติ');
+        });
+    }
+
+    function downloadScoresCSV() {
+      const scores = getStoredScores();
+      if (scores.length === 0) {
+        openAlert('ไม่มีข้อมูล', 'ไม่มีข้อมูลคะแนนให้ดาวน์โหลด');
+        return;
+      }
+
+      let csvContent = "\uFEFF"; // Add UTF-8 BOM for Thai encoding in Excel
+      csvContent += "ลำดับ,ชื่อ-นามสกุล,ชั้น,เลขที่,คะแนนด่าน 1,คะแนนด่าน 2,คะแนนรวม,วันเวลาที่บันทึก\n";
+
+      scores.forEach((score, i) => {
+        const cleanName = score.name.replace(/"/g, '""');
+        const cleanClass = score.class.replace(/"/g, '""');
+        csvContent += `${i + 1},"${cleanName}","${cleanClass}",${score.no},${score.m1},${score.m2},${score.total},"${score.time}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", `คะแนน_เกมจับคู่อัลกอริทึม_ม1.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      openAlert('ดาวน์โหลดไฟล์ 📥', 'ดาวน์โหลดไฟล์ผลคะแนนเรียบร้อยแล้ว (หมายเหตุ: หากดาวน์โหลดจากพรีวิวแอปพลิเคชันในระบบ Sandbox แล้วไม่ได้ผล ให้กดดาวน์โหลดแอปนี้เป็นไฟล์เดี่ยวแบบ standalone ไปรันบนเครื่องก่อน จะสามารถกดดาวน์โหลดไฟล์ CSV ได้อย่างสมบูรณ์ค่ะ)');
+    }
+
+    // ==========================================
+    // MODE 1 LOGIC
+    // ==========================================
+    function initMode1() {
+      m1Placements = {};
+      m1DeckOrder = shuffle(MODE1_CARDS.map(c => c.id));
+      m1SelectedCardId = null;
+      m1Checked = false;
+      m1Score = 0;
+      updateTotalScore();
+      renderMode1();
+    }
+
+    function renderMode1() {
+      const poolEl = document.getElementById('m1-pool');
+      const subjectsEl = document.getElementById('m1-subjects');
+
+      const placedCardIds = new Set(Object.values(m1Placements));
+      const poolCards = m1DeckOrder
+        .filter(id => !placedCardIds.has(id))
+        .map(id => MODE1_CARDS.find(c => c.id === id));
+
+      document.getElementById('m1-remaining').textContent = `เหลือ ${poolCards.length} การ์ด`;
+
+      if (poolCards.length === 0) {
+        poolEl.innerHTML = `<div class="empty-pool-msg">วางการ์ดครบทุกใบแล้ว! กดปุ่ม <b>"ตรวจคำตอบด่านที่ 1"</b> ด้านบนได้เลย</div>`;
+      } else {
+        poolEl.innerHTML = poolCards.map(card => renderM1CardHTML(card, null)).join('');
+      }
+
+      subjectsEl.innerHTML = MODE1_SUBJECTS.map(sub => {
+        const placedId = m1Placements[sub.id];
+        const placedCard = placedId ? MODE1_CARDS.find(c => c.id === placedId) : null;
+        const selectableClass = m1SelectedCardId ? 'selectable-target' : '';
+
+        return `
+          <div class="subject-zone ${selectableClass}"
+               ondragover="allowDrop(event)"
+               ondrop="dropToSubject1(event, '${sub.id}')"
+               onclick="handleSubjectClick1('${sub.id}')">
+            <div class="subject-header">
+              <div class="subject-emoji">${sub.emoji}</div>
+              <div>
+                <h4 class="subject-name">${sub.name}</h4>
+                <p class="subject-sub">${sub.sub}</p>
+              </div>
+            </div>
+            <div class="zone-drop-area">
+              ${placedCard
+                ? renderM1CardHTML(placedCard, sub.id)
+                : `<div class="zone-placeholder">${m1SelectedCardId ? 'คลิกที่นี่เพื่อวางการ์ดที่เลือก' : 'ลากการ์ดอัลกอริทึมมาวางที่นี่'}</div>`
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderM1CardHTML(card, currentSubId) {
+      const isSelected = m1SelectedCardId === card.id;
+      let statusClass = '';
+      let badgeHTML = '';
+
+      if (m1Checked && currentSubId) {
+        const isCorrect = card.subjectId === currentSubId;
+        statusClass = isCorrect ? 'correct' : 'incorrect';
+        badgeHTML = isCorrect
+          ? `<span class="card-status-tag ok">✓ ถูกต้อง</span>`
+          : `<span class="card-status-tag err">✗ ยังไม่ตรงวิชา</span>`;
+      }
+
+      return `
+        <div class="algo-card ${isSelected ? 'selected' : ''} ${statusClass}"
+             draggable="true"
+             ondragstart="dragStart1(event, '${card.id}')"
+             onclick="selectCard1(event, '${card.id}')">
+          <ul class="algo-card-steps">
+            ${card.steps.map(s => `<li>${s}</li>`).join('')}
+          </ul>
+          ${badgeHTML}
+        </div>
+      `;
+    }
+
+    function selectCard1(event, cardId) {
+      event.stopPropagation();
+      m1Checked = false;
+      m1SelectedCardId = (m1SelectedCardId === cardId) ? null : cardId;
+      renderMode1();
+    }
+
+    // Accessibility fallback
+    function handleSubjectClick1(subjectId) {
+      if (!m1SelectedCardId) return;
+      placeCardInSubject1(m1SelectedCardId, subjectId);
+      m1SelectedCardId = null;
+      renderMode1();
+    }
+
+    function handlePoolClick1() {
+      if (!m1SelectedCardId) return;
+      for (const sId in m1Placements) {
+        if (m1Placements[sId] === m1SelectedCardId) {
+          delete m1Placements[sId];
+        }
+      }
+      m1SelectedCardId = null;
+      m1Checked = false;
+      renderMode1();
+    }
+
+    function dragStart1(event, cardId) {
+      event.dataTransfer.setData('text/plain', cardId);
+      m1SelectedCardId = null;
+    }
+
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function dropToSubject1(event, subjectId) {
+      event.preventDefault();
+      const cardId = event.dataTransfer.getData('text/plain');
+      if (!cardId) return;
+      placeCardInSubject1(cardId, subjectId);
+      renderMode1();
+    }
+
+    function dropToPool1(event) {
+      event.preventDefault();
+      const cardId = event.dataTransfer.getData('text/plain');
+      if (!cardId) return;
+      for (const sId in m1Placements) {
+        if (m1Placements[sId] === cardId) {
+          delete m1Placements[sId];
+        }
+      }
+      m1Checked = false;
+      renderMode1();
+    }
+
+    function placeCardInSubject1(cardId, subjectId) {
+      for (const sId in m1Placements) {
+        if (m1Placements[sId] === cardId) {
+          delete m1Placements[sId];
+        }
+      }
+      m1Placements[subjectId] = cardId;
+      m1Checked = false;
+    }
+
+    function checkMode1() {
+      m1Checked = true;
+      let correct = 0;
+      MODE1_SUBJECTS.forEach(sub => {
+        const cardId = m1Placements[sub.id];
+        const card = MODE1_CARDS.find(c => c.id === cardId);
+        if (card && card.subjectId === sub.id) {
+          correct++;
+        }
+      });
+      m1Score = correct;
+      updateTotalScore();
+      renderMode1();
+    }
+
+    function resetMode1() {
+      initMode1();
+    }
+
+    // ==========================================
+    // MODE 2 LOGIC
+    // ==========================================
+    function initMode2() {
+      m2Placements = {};
+      m2DeckOrder = shuffle(MODE2_QUESTIONS.map(q => q.answerId));
+      m2SelectedAnsId = null;
+      m2Checked = false;
+      m2Score = 0;
+      updateTotalScore();
+      renderMode2();
+    }
+
+    function renderMode2() {
+      const poolEl = document.getElementById('m2-pool');
+      const boardsEl = document.getElementById('m2-boards');
+
+      const placedAnsIds = new Set(Object.values(m2Placements));
+      const poolItems = m2DeckOrder
+        .filter(ansId => !placedAnsIds.has(ansId))
+        .map(ansId => MODE2_QUESTIONS.find(q => q.answerId === ansId));
+
+      document.getElementById('m2-remaining').textContent = `เหลือ ${poolItems.length} ชิ้นส่วน`;
+
+      if (poolItems.length === 0) {
+        poolEl.innerHTML = `<div class="empty-pool-msg">เติมครบทุกข้อแล้ว! กดปุ่ม <b>"ตรวจคำตอบด่านที่ 2"</b> ด้านบนได้เลย</div>`;
+      } else {
+        poolEl.innerHTML = poolItems.map(item => renderM2ChipHTML(item, null)).join('');
+      }
+
+      boardsEl.innerHTML = MODE2_QUESTIONS.map(q => {
+        const placedAnsId = m2Placements[q.id];
+        const placedObj = placedAnsId ? MODE2_QUESTIONS.find(item => item.answerId === placedAnsId) : null;
+
+        return `
+          <div class="algo-board">
+            <div class="algo-board-head">
+              <h4 class="algo-board-title">${q.title}</h4>
+              <span class="badge-subject">${q.subject}</span>
+            </div>
+            <ul class="step-list">
+              ${q.before.map(step => `<li class="step-item">${step}</li>`).join('')}
+              <li>
+                <div class="missing-slot"
+                     ondragover="allowDrop(event)"
+                     ondrop="dropToSlot2(event, '${q.id}')"
+                     onclick="handleSlotClick2('${q.id}')">
+                  ${placedObj
+                    ? renderM2ChipHTML(placedObj, q.id)
+                    : `<div class="missing-slot-placeholder">${m2SelectedAnsId ? 'คลิกเพื่อเติมขั้นตอนที่เลือกที่นี่' : '[ ? ] ลากขั้นตอนที่หายไปมาวางในช่องนี้'}</div>`
+                  }
+                </div>
+              </li>
+              ${q.after.map(step => `<li class="step-item">${step}</li>`).join('')}
+            </ul>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderM2ChipHTML(item, currentQuestionId) {
+      const isSelected = m2SelectedAnsId === item.answerId;
+      let statusClass = '';
+      let badgeHTML = '';
+
+      if (m2Checked && currentQuestionId) {
+        const isCorrect = item.id === currentQuestionId;
+        statusClass = isCorrect ? 'correct' : 'incorrect';
+        badgeHTML = isCorrect
+          ? `<span class="card-status-tag ok">✓ ถูกต้อง</span>`
+          : `<span class="card-status-tag err">✗ ขั้นตอนยังไม่ตรงกับโจทย์ข้อนี้</span>`;
+      }
+
+      return `
+        <div class="algo-card ${isSelected ? 'selected' : ''} ${statusClass}"
+             draggable="true"
+             ondragstart="dragStart2(event, '${item.answerId}')"
+             onclick="selectAns2(event, '${item.answerId}')">
+          <div style="font-size:13.5px; font-weight:600;">${item.answerText}</div>
+          ${badgeHTML}
+        </div>
+      `;
+    }
+
+    function selectAns2(event, ansId) {
+      event.stopPropagation();
+      m2Checked = false;
+      m2SelectedAnsId = (m2SelectedAnsId === ansId) ? null : ansId;
+      renderMode2();
+    }
+
+    function handleSlotClick2(questionId) {
+      if (!m2SelectedAnsId) return;
+      placeAnsInSlot2(m2SelectedAnsId, questionId);
+      m2SelectedAnsId = null;
+      renderMode2();
+    }
+
+    function handlePoolClick2() {
+      if (!m2SelectedAnsId) return;
+      for (const qId in m2Placements) {
+        if (m2Placements[qId] === m2SelectedAnsId) {
+          delete m2Placements[qId];
+        }
+      }
+      m2SelectedAnsId = null;
+      m2Checked = false;
+      renderMode2();
+    }
+
+    function dragStart2(event, ansId) {
+      event.dataTransfer.setData('text/plain', ansId);
+      m2SelectedAnsId = null;
+    }
+
+    // Drop handlers
+    function dropToSlot2(event, questionId) {
+      event.preventDefault();
+      const ansId = event.dataTransfer.getData('text/plain');
+      if (!ansId) return;
+      placeAnsInSlot2(ansId, questionId);
+      renderMode2();
+    }
+
+    function dropToPool2(event) {
+      event.preventDefault();
+      const ansId = event.dataTransfer.getData('text/plain');
+      if (!ansId) return;
+      for (const qId in m2Placements) {
+        if (m2Placements[qId] === ansId) {
+          delete m2Placements[qId];
+        }
+      }
+      m2Checked = false;
+      renderMode2();
+    }
+
+    function placeAnsInSlot2(ansId, questionId) {
+      for (const qId in m2Placements) {
+        if (m2Placements[qId] === ansId) {
+          delete m2Placements[qId];
+        }
+      }
+      m2Placements[questionId] = ansId;
+      m2Checked = false;
+    }
+
+    function checkMode2() {
+      m2Checked = true;
+      let correct = 0;
+      MODE2_QUESTIONS.forEach(q => {
+        if (m2Placements[q.id] === q.answerId) {
+          correct++;
+        }
+      });
+      m2Score = correct;
+      updateTotalScore();
+      renderMode2();
+    }
+
+    function resetMode2() {
+      initMode2();
+    }
+
+    // Initialize both modes on load
+    initMode1();
+    initMode2();
+  </script>
+</body>
+</html>
