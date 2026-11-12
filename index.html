@@ -1246,71 +1246,44 @@ function submitToGoogleForm(name, stClass, stNo, m1, m2, total) {<br>
     // ==========================================
     // GOOGLE FORM BACKGROUND SUBMISSION
     // ==========================================
-    function submitToGoogleForm(name, stClass, stNo, m1, m2, total) {
-      // 📍 คอนฟิกระบบออนไลน์: คุณครูสามารถสร้าง Google Form และนำลิงก์ที่กรอกข้อมูลไว้ล่วงหน้ามาแปะที่นี่ได้ค่ะ
-      const formUrl = "about:invalid#zPythonSafez";
-      const entryName = "entry.XXXXXX";  // รหัสฟิลด์ ชื่อ-นามสกุล
-      const entryClass = "entry.XXXXXX"; // รหัสฟิลด์ ชั้น
-      const entryNo = "entry.XXXXXX";    // รหัสฟิลด์ เลขที่
-      const entryM1 = "entry.XXXXXX";    // รหัสฟิลด์ คะแนนด่านที่ 1
-      const entryM2 = "entry.XXXXXX";    // รหัสฟิลด์ คะแนนด่านที่ 2
-      const entryTotal = "entry.XXXXXX"; // รหัสฟิลด์ คะแนนรวม
+function submitToGoogleForm(name, stClass, stNo, m1, m2, total) {
+  // ลิงก์ Apps Script Web App ของคุณครู
+  const scriptUrl = "https://script.google.com/macros/s/AKfycbzwAdqtfxUJOxTcMGG8aigZINw2dSsZC0tXyZQdmgkGGAsapouK2uIgJbZ_XrEaBaye/exec";
 
-      if (formUrl.includes("YOUR_FORM_ID")) {
-        // ยังไม่ได้ตั้งค่าระบบออนไลน์แบบ Hardcoded
-        console.log("ยังไม่ได้ตั้งค่า Google Sheets ออนไลน์");
-        return;
-      }
+  // ตรวจสอบความถูกต้องของข้อมูล
+  if (!name || !stClass || !stNo) {
+    alert("กรุณากรอกชื่อ-นามสกุล ชั้น และเลขที่ให้ครบถ้วนก่อนส่งคะแนนนะคะ");
+    return;
+  }
 
-      const formData = new FormData();
-      formData.append(entryName, name);
-      formData.append(entryClass, stClass);
-      formData.append(entryNo, stNo);
-      formData.append(entryM1, m1);
-      formData.append(entryM2, m2);
-      formData.append(entryTotal, total);
+  // เตรียมข้อมูลคะแนนส่งเข้า Google Sheets
+  const payload = {
+    name: name,
+    class: stClass,
+    no: stNo,
+    m1: m1,
+    m2: m2,
+    total: total
+  };
 
-      // ส่ง Request แบบเบื้องหลังข้ามโดเมนไปยัง Google Forms
-      fetch(formUrl, {
-        method: "POST",
-        mode: "no-cors",
-        body: formData
-      }).then(() => {
-        console.log("ส่งคะแนนไป Google Sheets ออนไลน์สำเร็จเรียบร้อยแล้วค่ะ!");
-      }).catch((err) => {
-        console.error("การเชื่อมต่อระบบคลาวด์ขัดข้อง: ", err);
-      });
-    }
-
-    function renderScoresTable() {
-      const tbody = document.getElementById('scores-table-body');
-      const tableWrapper = document.querySelector('.score-table-wrapper');
-      const noDataMsg = document.getElementById('no-scores-container');
-      const scores = getStoredScores();
-
-      if (scores.length === 0) {
-        tbody.innerHTML = '';
-        tableWrapper.classList.add('hidden');
-        noDataMsg.classList.remove('hidden');
-        return;
-      }
-
-      tableWrapper.classList.remove('hidden');
-      noDataMsg.classList.add('hidden');
-
-      tbody.innerHTML = scores.map((score, index) => `
-        <tr>
-          <td><b>${index + 1}</b></td>
-          <td>${escapeHtml(score.name)}</td>
-          <td>${escapeHtml(score.class)}</td>
-          <td>${escapeHtml(score.no)}</td>
-          <td style="color: var(--brand); font-weight: 600;">${score.m1} / 6</td>
-          <td style="color: var(--accent); font-weight: 600;">${score.m2} / 6</td>
-          <td style="color: var(--success); font-weight: 700; font-size: 15px;">${score.total} / 12</td>
-          <td style="color: var(--muted); font-size: 12px;">${score.time}</td>
-        </tr>
-      `).join('');
-    }
+  // ส่งข้อมูลเข้าสู่ Google Sheets
+  fetch(scriptUrl, {
+    method: "POST",
+    mode: "no-cors",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(payload)
+  })
+  .then(function() {
+    alert("🎉 บันทึกคะแนนเข้า Google Sheets สำเร็จเรียบร้อยแล้วค่ะ!");
+    console.log("ส่งข้อมูลสำเร็จ:", payload);
+  })
+  .catch(function(error) {
+    alert("⚠️ เกิดข้อผิดพลาดในการส่งคะแนน กรุณาแจ้งคุณครูผู้คุมสอบค่ะ");
+    console.error("ส่งข้อมูลล้มเหลว:", error);
+  });
+}
 
     function escapeHtml(text) {
       return String(text)
